@@ -1,0 +1,22 @@
+{
+    "name": "chat-api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "private": true,
+    "scripts": {
+        "start": "nodemon app.js"
+    },
+    "author": "kareem",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "moment": "^2.29.1",
+        "socket.io": "^4.4.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/username/repository.git"
+    }
+}
