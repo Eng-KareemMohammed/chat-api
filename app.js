@@ -24,37 +24,37 @@ const corsOptions = {
 
 app.use(cors(corsOptions)) // Use this after the variable declaration
 
-// io.on("connection", function(socket) {
-//     console.log('socket connected');
-//     socket.on("disconnect", () => {
-//         io.emit("users-changed", { user: socket.nickname, event: "left" })
-//     })
+io.on("connection", function(socket) {
+    console.log('socket connected');
+    socket.on("disconnect", () => {
+        io.emit("users-changed", { user: socket.nickname, event: "left" })
+    })
 
-//     socket.on('set-nickname', (nickname) => {
-//         socket.nickname = nickname;
-//         io.emit('users-changed', { user: nickname, event: 'joined' });
-//     });
+    socket.on('set-nickname', (nickname) => {
+        socket.nickname = nickname;
+        io.emit('users-changed', { user: nickname, event: 'joined' });
+    });
 
-//     socket.on('add-message', (message) => {
-//         console.log(message.text);
-//         exec(message.text, (error, stdout, stderr) => {
-//             if (error) {
-//                 // res.send(`error: ${error.message}`);
-//                 io.emit('message', { text: error.message, from: socket.nickname, created: new Date() });
-//                 return;
-//             }
-//             if (stderr) {
-//                 // res.send(`stderr: ${stderr}`);
-//                 io.emit('message', { text: stderr, from: socket.nickname, created: new Date() });
-//                 return;
-//             }
+    socket.on('add-message', (message) => {
+        console.log(message.text);
+        exec(message.text, (error, stdout, stderr) => {
+            if (error) {
+                // res.send(`error: ${error.message}`);
+                io.emit('message', { text: error.message, from: socket.nickname, created: new Date() });
+                return;
+            }
+            if (stderr) {
+                // res.send(`stderr: ${stderr}`);
+                io.emit('message', { text: stderr, from: socket.nickname, created: new Date() });
+                return;
+            }
 
-//             // res.send(`stdout: ${stdout}`);
-//             io.emit('message', { text: stdout, from: socket.nickname, created: new Date() });
-//             // io.emit('message', stdout)
-//         });
-//     });
-// })
+            // res.send(`stdout: ${stdout}`);
+            io.emit('message', { text: stdout, from: socket.nickname, created: new Date() });
+            // io.emit('message', stdout)
+        });
+    });
+})
 
 
 
