@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://localhost:27017/Kareem_terminal", {
-    dbName: "Kareem_terminal"
-})
+mongoose.connect("mongodb://localhost:27017", {
+        dbName: "Kareem_terminal"
+    })
     .then(() => {
         console.log('connected to mongoDb');
     }).catch((err) => {
@@ -21,7 +21,7 @@ mongoose.connection.on("disconnected", () => {
     console.log('disconnected to mongoose');
 })
 
-process.on("SIGINT", async () => {
+process.on("SIGINT", async() => {
     await mongoose.connection.close();
     process.exit(0);
 })
