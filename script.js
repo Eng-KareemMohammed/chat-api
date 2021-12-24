@@ -1,6 +1,6 @@
-const app = require('./Terminal_api')
-// require('dotenv').config()
-require("./Terminal_api/helpers/init_mongodb")
+const app = require('./chat-api/app.js')
+    // require('dotenv').config()
+require("./chat-api/helpers/init_mongodb")
 
 
 // const PORT = process.env.PORT || 3000
