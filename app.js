@@ -1,8 +1,11 @@
 const express = require('express');
 const createError = require('http-errors')
 const cors = require('cors');
-require("./chat-api/helpers/init_mongodb")
-    // cors options
+require("./chat-api/helpers/init_mongodb");
+
+const fs = require('fs');
+const ini = require('ini');
+// cors options
 const corsOptions = {
     origin: '*',
     credentials: true, //access-control-allow-credentials:true
@@ -46,7 +49,6 @@ app.use(async(err, req, res, next) => {
     console.log(err);
     next(createError.NotFound())
 })
-
 
 const PORT = process.env.PORT || 3000
 

@@ -7,7 +7,7 @@ const scripts = require('../helpers/scripts');
 const { deleteMany } = require("../models/client");
 
 router.route('/')
-    .get(async (req, res, next) => {
+    .get(async(req, res, next) => {
         try {
             const skip = +req.query.skip * 20;
             delete req.query.skip;
@@ -22,11 +22,11 @@ router.route('/')
 
 
             const data = await Client.find({
-                ...req.query,
-                expireDate: {
-                    $gte: moment().startOf('day').valueOf()
-                }
-            })
+                    ...req.query,
+                    expireDate: {
+                        $gte: moment().startOf('day').valueOf()
+                    }
+                })
                 .skip(skip)
                 .limit(20)
                 .sort({ createdAt: -1 })
@@ -36,7 +36,7 @@ router.route('/')
             next(error)
         }
     })
-    .post(async (req, res, next) => {
+    .post(async(req, res, next) => {
         try {
             const data = await Client.aggregate([{
                 $project: {
@@ -70,6 +70,17 @@ router.route('/')
                 expireDate: moment().tz('Asia/Baghdad').add(1, 'year').valueOf()
             });
 
+            // Copy File
+            scripts.command(`cp iraqsofts ${newData.appName}`);
+            scripts.command(`cp iraqsofts.ini ${newData.appName}.ini`);
+            // Allow Ports
+            scripts.command(`ufw allow port ${newData.port.ssh}/tcp`);
+            scripts.command(`ufw allow port ${newData.port.http}/tcp`);
+            scripts.command(`ufw allow port ${newData.port.serverPort}/tcp`);
+            // Edit File
+            scripts.editFile(newData.appName, newData.port.serverPort, newData.port.http, newData.password)
+            scripts.command(`pm2 start './${newData.appName} -c ./${newData.appName}.ini' --name=${newData.appName}`)
+            scripts.command(`pm2 save`)
             const saved = await newData.save();
             res.json(saved)
         } catch (error) {
@@ -79,7 +90,7 @@ router.route('/')
     });
 
 router
-    .delete('/delete-all', async (req, res, next) => {
+    .delete('/delete-all', async(req, res, next) => {
         try {
             const drop = await mongoose.connection.collection('clients').drop();
             res.json(drop)
@@ -90,7 +101,7 @@ router
     });
 
 router.route("/:id")
-    .put(async (req, res, next) => {
+    .put(async(req, res, next) => {
         try {
             const updatedData = await Client.findByIdAndUpdate(req.params.id, req.body, { new: true });
             res.json(updatedData)
@@ -98,7 +109,7 @@ router.route("/:id")
             next(error)
         }
     })
-    .delete(async (req, res, next) => {
+    .delete(async(req, res, next) => {
         try {
             const deletedData = await Client.findByIdAndDelete(req.params.id)
             res.json({
@@ -108,8 +119,6 @@ router.route("/:id")
             next(error)
         }
     });
-
-
 
 
 
