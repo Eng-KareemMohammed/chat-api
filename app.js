@@ -16,7 +16,8 @@ const corsOptions = {
 // Import Routers
 const clientRouter = require('./chat-api/routers/client')
 const commandRouter = require('./chat-api/routers/command')
-const appOperations = require('./chat-api/routers/app_operations')
+const appOperationsRouter = require('./chat-api/routers/app_operations')
+const groupRouter = require('./chat-api/routers/group')
 const app = express();
 
 
@@ -31,7 +32,8 @@ app.use(express.static('./chat-api/public/uploads'))
 
 app.use('/client', clientRouter)
 app.use('/command', commandRouter)
-app.use('/updateApp', appOperations)
+app.use('/updateApp', appOperationsRouter)
+app.use('/group', groupRouter)
 
 // handle ERRORS
 app.use((err, req, res, next) => {

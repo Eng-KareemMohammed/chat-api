@@ -13,20 +13,18 @@ router.route('/')
             const data = new AppOperations(req.body);
             switch (data.status) {
                 case 0:
-                    scripts.command(`pm2 stop ${data.appName}`);
+                    res.send(scripts.command(`pm2 stop ${data.appName}`));
                     break;
                 case 1:
-                    scripts.command(`pm2 start ${data.appName}`);
+                    res.send(scripts.command(`pm2 start ${data.appName}`));
                     break;
                 case 2:
-                    scripts.command(`pm2 restart ${data.appName}`);
+                    res.send(scripts.command(`pm2 restart ${data.appName}`));
                     break;
                 case 3:
-                    scripts.command(`pm2 describe ${data.appName}`);
+                    res.send(scripts.command(`pm2 describe ${data.appName}`));
                     break;
             }
-
-            res.send(true)
         } catch (error) {
             next(error)
         }

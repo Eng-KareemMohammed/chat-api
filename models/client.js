@@ -39,6 +39,10 @@ const clientSchema = new Schema({
     expireDate: {
         type: Number,
         require: true
+    },
+    group: {
+        type: Schema.Types.ObjectId,
+        ref: 'group'
     }
 
 }, { timestamps: true })

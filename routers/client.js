@@ -30,6 +30,7 @@ router.route('/')
                 .skip(skip)
                 .limit(20)
                 .sort({ createdAt: -1 })
+                .populate('group')
             res.json(data)
 
         } catch (error) {
