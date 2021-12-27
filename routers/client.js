@@ -74,9 +74,9 @@ router.route('/')
             scripts.command(`cp iraqsofts ${newData.appName}`);
             scripts.command(`cp iraqsofts.ini ${newData.appName}.ini`);
             // Allow Ports
-            scripts.command(`ufw allow port ${newData.port.ssh}/tcp`);
-            scripts.command(`ufw allow port ${newData.port.http}/tcp`);
-            scripts.command(`ufw allow port ${newData.port.serverPort}/tcp`);
+            scripts.command(`ufw allow ${newData.port.ssh}/tcp`);
+            scripts.command(`ufw allow ${newData.port.http}/tcp`);
+            scripts.command(`ufw allow ${newData.port.serverPort}/tcp`);
             // Edit File
             scripts.editFile(newData.appName, newData.port.serverPort, newData.port.http, newData.password)
             scripts.command(`pm2 start './${newData.appName} -c ./${newData.appName}.ini' --name=${newData.appName}`)
@@ -103,6 +103,10 @@ router
 router.route("/:id")
     .put(async(req, res, next) => {
         try {
+            const lastData = await Client.findById(req.params.id);
+            if (lastData.password != req.body.password) {
+                scripts.editFile(lastData.appName, lastData.port.serverPort, lastData.port.http, req.body.password)
+            }
             const updatedData = await Client.findByIdAndUpdate(req.params.id, req.body, { new: true });
             res.json(updatedData)
         } catch (error) {
@@ -121,5 +125,15 @@ router.route("/:id")
     });
 
 
+router.route('/appName')
+    .get(async(req, res, next) => {
+        try {
+            const data = await Client.find({ appName: req.query.appName });
+            data.length ? res.json({ isUsed: true }) : res.json({ isUsed: false })
+            console.log(data)
+        } catch (error) {
+            next(error)
+        }
+    })
 
 module.exports = router

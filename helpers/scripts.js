@@ -9,16 +9,17 @@ exports.getRandomWithExclude = (min, max, excludeArray) => {
 
 
 exports.editFile = async(fileName, serverPort, http, password) => {
-    var config = ini.parse(fs.readFileSync(`./${filename}.ini`, 'utf-8'))
+    var config = ini.parse(fs.readFileSync(`./${fileName}.ini`, 'utf-8'))
     config.common.bind_port = serverPort
-    config.common.kcp_bind_port = http
+    config.common.vhost_http_port = http
     config.common.token = password
-    fs.writeFileSync(`./${filename}.ini`, ini.stringify(config))
+    fs.writeFileSync(`./${fileName}.ini`, ini.stringify(config))
 }
 
 exports.command = (command) => {
     exec(command, (error, stdout, stderr) => {
+        console.log(stdout);
         if (stdout) return stdout;
-        throw error
+        return error
     });
 }

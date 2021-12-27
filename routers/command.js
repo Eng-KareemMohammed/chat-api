@@ -23,7 +23,7 @@ router.route('/')
         } catch (error) {
             next(error)
         }
-    })
+    });
 
 
 module.exports = router;
