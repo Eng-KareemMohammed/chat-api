@@ -9,6 +9,10 @@ const groupSchema = new Schema({
     mode: {
         type: String,
         required: true
+    },
+    url: {
+        type: String,
+        required: true
     }
 }, { timestamps: true });
 
