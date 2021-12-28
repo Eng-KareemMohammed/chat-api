@@ -43,6 +43,10 @@ const clientSchema = new Schema({
     group: {
         type: Schema.Types.ObjectId,
         ref: 'group'
+    },
+    ip: {
+        type: String,
+        default: ''
     }
 
 }, { timestamps: true })

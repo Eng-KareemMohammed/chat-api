@@ -20,5 +20,5 @@ module.exports = AppOperations
 status == 0 => pm2 stop appName
 status == 1 => pm2 start appName
 status == 2 => pm2 restart appName
-status == 0 => pm2 describe appName
+status == 3 => pm2 describe appName
 */
