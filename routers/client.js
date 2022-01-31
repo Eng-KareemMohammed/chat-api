@@ -2,17 +2,18 @@ const router = require("express").Router();
 const createError = require('http-errors');
 const mongoose = require('mongoose')
 const Client = require('../models/client');
-const Group = require('../models/group');
-
+const Bill = require('../models/bill')
 var moment = require('moment-timezone');
 const scripts = require('../helpers/scripts');
-const { deleteMany } = require("../models/client");
 
 router.route('/')
     .get(async(req, res, next) => {
         try {
+
+
             // const skip = +req.query.skip * 20;
             // delete req.query.skip;
+            // const bills  = await Bill.find
 
             if (req.query.searchText) {
                 req.query.clientName = {
@@ -21,7 +22,6 @@ router.route('/')
                 delete req.query.searchText;
                 console.log(req.query);
             }
-
 
             const data = await Client.find({
                     ...req.query,
@@ -33,6 +33,7 @@ router.route('/')
                 // .limit(20)
                 .sort({ createdAt: -1 })
                 .populate('group')
+
             res.json(data)
 
         } catch (error) {
@@ -41,59 +42,18 @@ router.route('/')
     })
     .post(async(req, res, next) => {
         try {
-            const groupData = await Group.findById(req.body.group);
-            let ssh = 0,
-                http = 0,
-                serverPort = 0;
-
-            if (groupData.mode == 'online') {
-                const data = await Client.aggregate([{
-                    $project: {
-                        _id: 0,
-                        ports: [
-                            "$port.ssh",
-                            "$port.http",
-                            "$port.serverPort"
-                        ]
-                    }
-                }]);
-                let ports = [];
-                data.map(el => {
-                    ports.push(...el.ports)
-                })
-
-                ssh = scripts.getRandomWithExclude(1024, 49151, ports)
-                ports.push(ssh)
-                http = scripts.getRandomWithExclude(1024, 49151, ports)
-                ports.push(http)
-                serverPort = scripts.getRandomWithExclude(1024, 49151, ports)
-
-                // Copy File
-                scripts.command(`cp iraqsofts ${req.body.appName}`);
-                scripts.command(`cp iraqsofts.ini ${req.body.appName}.ini`);
-                // Allow Ports
-                scripts.command(`ufw allow ${ssh}/tcp`);
-                scripts.command(`ufw allow ${http}/tcp`);
-                scripts.command(`ufw allow ${serverPort}/tcp`);
-                // Edit File
-                scripts.editFile(req.body.appName, serverPort, http, req.body.password)
-                    // Start Server
-                scripts.command(`pm2 start './${req.body.appName} -c ./${req.body.appName}.ini' --name=${req.body.appName}`)
-                    // save
-                scripts.command(`pm2 save`)
-            }
-
             const newData = new Client({
                 ...req.body,
-                port: {
-                    ssh,
-                    http,
-                    serverPort
-                },
-                expireDate: moment().tz('Asia/Baghdad').add(1, 'year').valueOf()
+                expireDate: moment().tz('Asia/Baghdad').add(1, 'month').valueOf()
             });
 
             const saved = await newData.save();
+            const billData =  new Bill({
+                client:saved._id,
+                expireDate: moment().tz('Asia/Baghdad').add(1, 'month').valueOf(),
+                note:" تم الاضافة مع العميل"
+            })
+            await billData.save()
             res.json(saved)
         } catch (error) {
             console.log(error);
@@ -144,6 +104,16 @@ router.route('/appName')
         try {
             const data = await Client.find({ appName: req.query.appName });
             data.length ? res.json({ isUsed: true }) : res.json({ isUsed: false })
+        } catch (error) {
+            next(error)
+        }
+    });
+
+router.route('/updateStatus')
+    .post(async(req, res, next) => {
+        try {
+            const updateData = await Client.updateMany({ status: { $ne: req.body.status }, ...req.query }, { $set: { status: req.body.status } }, {})
+            res.json(updateData.matchedCount)
         } catch (error) {
             next(error)
         }

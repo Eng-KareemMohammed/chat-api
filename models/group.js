@@ -6,13 +6,18 @@ const groupSchema = new Schema({
         type: String,
         required: true,
     },
-    mode: {
-        type: String,
-        required: true
+    user:{
+        type:Schema.Types.ObjectId,
+        ref:"user",
+        required:true
     },
-    url: {
-        type: String,
-        required: true
+    earthUsername:{
+        type:String,
+        required:true
+    },
+    earthPassword:{
+        type:String,
+        required:true
     }
 }, { timestamps: true });
 

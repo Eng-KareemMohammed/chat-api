@@ -6,12 +6,6 @@ const clientSchema = new Schema({
         type: String,
         required: true
     },
-
-    port: {
-        ssh: Number,
-        http: Number,
-        serverPort: Number
-    },
     phoneNumber: {
         type: String,
         required: true
@@ -32,23 +26,22 @@ const clientSchema = new Schema({
         type: String,
         require: true
     },
-    appName: {
-        type: String,
-        required: true
-    },
     expireDate: {
         type: Number,
-        require: true
+        default:0
     },
     group: {
         type: Schema.Types.ObjectId,
         ref: 'group'
     },
-    ip: {
-        type: String,
-        default: ''
+    restPrice:{
+        type:Number,
+        default:0
+    },
+    user:{
+        type: Schema.Types.ObjectId,
+        ref: 'user'
     }
-
 }, { timestamps: true })
 
 clientSchema.index({ createdAt: -1 })

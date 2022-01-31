@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
-
 mongoose.connect("mongodb://localhost:27017", {
-        dbName: "Kareem_terminal"
+        dbName: "earth_link2_1"
     })
     .then(() => {
         console.log('connected to mongoDb');
+
     }).catch((err) => {
         console.log(err);
     })
 
 mongoose.connection.on("connected", () => {
     console.log('mongoose connected');
+
 })
 
 mongoose.connection.on("error", (err) => {
