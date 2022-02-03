@@ -30,7 +30,7 @@ const clientSchema = new Schema({
         type: Number,
         default:0
     },
-    group: {
+    groupId: {
         type: Schema.Types.ObjectId,
         ref: 'group'
     },
@@ -38,7 +38,7 @@ const clientSchema = new Schema({
         type:Number,
         default:0
     },
-    user:{
+    userId:{
         type: Schema.Types.ObjectId,
         ref: 'user'
     }

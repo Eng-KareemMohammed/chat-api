@@ -7,6 +7,10 @@ const billSchema = new Schema({
         type:String,
         required: true
     },
+    groupId:{
+        type:String,
+        required: true
+    },
     note:{
         type:String,
         default:"",
@@ -46,6 +50,10 @@ const billSchema = new Schema({
     status:{
         type:Number,
         default:0
+    },
+    edit:{
+        type:Boolean,
+        default:true
     }
 
 }, { timestamps: true });

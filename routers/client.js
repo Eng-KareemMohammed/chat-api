@@ -32,7 +32,7 @@ router.route('/')
                 // .skip(skip)
                 // .limit(20)
                 .sort({ createdAt: -1 })
-                .populate('group')
+                .populate('groupId')
 
             res.json(data)
 
@@ -49,7 +49,8 @@ router.route('/')
 
             const saved = await newData.save();
             const billData =  new Bill({
-                client:saved._id,
+                userId:saved._id,
+                groupId:saved?.groupId,
                 expireDate: moment().tz('Asia/Baghdad').add(1, 'month').valueOf(),
                 note:" تم الاضافة مع العميل"
             })

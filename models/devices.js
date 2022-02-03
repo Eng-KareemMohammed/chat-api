@@ -14,6 +14,14 @@ const deviceSchema = new Schema({
     ip: {
         type: String,
         required: true
+    },
+    username:{
+        type:String,
+        default:""
+    },
+    password:{
+        type:String,
+        default:''
     }
 }, { timestamps: true });
 

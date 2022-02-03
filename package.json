@@ -1,0 +1,22 @@
+{
+    "name": "terminal-api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start": "nodemon app.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "cors": "^2.8.5",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.2",
+        "fcm-node": "^1.6.1",
+        "http-errors": "^2.0.0",
+        "ini": "^2.0.0",
+        "moment-timezone": "^0.5.34",
+        "mongoose": "^6.1.3"
+    }
+}

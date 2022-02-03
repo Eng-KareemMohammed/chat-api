@@ -1,0 +1,20 @@
+POST http://localhost:3000/group
+Content-Type: application/json
+
+{
+    "name":"online"
+}
+###
+GET  http://localhost:3000/group
+Content-Type: application/json
+
+{
+    "name":"offline"
+}
+###\
+PUT http://localhost:3000/client/updateStatus
+Content-Type: application/json
+
+{
+    "status":1
+}

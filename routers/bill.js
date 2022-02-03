@@ -7,9 +7,9 @@ const Client = require('../models/client')
 router.route('/')
     .get(async(req, res, next) => {
         try {
-            let date = {}
+            let filter = {}
             if(req.query.from && req.query.to) {
-                date.$and = [
+                filter.$and = [
                     {createdAt : {$gte : new Date(req.query.from).toISOString()}},
                     {createdAt : {$lt :new Date(req.query.to).toISOString()}}
                 ]
@@ -17,9 +17,22 @@ router.route('/')
                 delete req.query.to
             }
 
+            if(req.query.restPrice){
+                filter.restPrice = {
+                    $gt: 0
+                }
+                delete req.query.restPrice
+            }
+
+            if(req.query.paidPrice){
+                filter.paidPrice = {
+                    $gt: 0
+                }
+                delete req.query.paidPrice
+            }
             const data = await Bill.find({
                 ...req.query,
-                ...date
+                ...filter
             })
                 .sort({ createdAt: -1 });
 
@@ -75,9 +88,11 @@ router.route("/:id")
             try {
 
                 let match = {
-                    status :0
+                    status :0,
+                    groupId:req.query.groupId
                 }
 
+                console.log(match);
                 if(req.query.from && req.query.to) {
                     match.createdAt=  {$gte: new Date(req.query.from), $lt : new Date(req.query.to)}
                 }
@@ -149,5 +164,15 @@ router.route('/client/total')
                 console.log(error);
                 next(error)
             }
-        })
-module.exports = router;
+        });
+
+router.get('/count',async (req, res, next) => {
+    try {
+        data = await Bill.find(req.query).count()
+        res.json(data)
+    } catch (error) {
+        next(error)
+    }
+})
+
+module.exports = router; 

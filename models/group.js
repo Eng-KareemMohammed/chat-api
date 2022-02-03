@@ -18,6 +18,10 @@ const groupSchema = new Schema({
     earthPassword:{
         type:String,
         required:true
+    },
+    earthLink:{
+        type:Boolean,
+        default:true
     }
 }, { timestamps: true });
 
