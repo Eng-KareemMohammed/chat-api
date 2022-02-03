@@ -21,7 +21,6 @@ const earthLinkRouter = require('./routers/earth-link')
 const otpRouter = require('./routers/otp')
 const app = express();
 
-const check = require('./helpers/scripts')
     // init static
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
